@@ -823,12 +823,14 @@ func (e *Element) Text() (string, error) {
 //   \return \b #SCDOM_RESULT SCAPI
 func (e *Element) SetText(text string) error {
 	// args
-	u16, err := Utf16FromString(text)
-	if err != nil {
-		return err
-	}
-	clength := C.UINT(len(u16))
-	ctext := C.LPCWSTR(unsafe.Pointer(&u16[0]))
+	/* 	u16, err := Utf16FromString(text)
+	   	if err != nil {
+	   		return err
+	   	}
+	*/
+	str := []byte(text)
+	clength := C.UINT(len(str))
+	ctext := C.LPCWSTR(unsafe.Pointer(&str[0]))
 	// cgo call
 	r := C.SciterSetElementText(e.handle, ctext, clength)
 	return wrapDomResult(r, "SciterSetElementText")
