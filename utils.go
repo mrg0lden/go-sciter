@@ -6,6 +6,7 @@ package sciter
 */
 import "C"
 import (
+	"syscall"
 	"unicode/utf16"
 	"unsafe"
 )
@@ -45,13 +46,12 @@ func StringToBytePtr(s string) *byte {
 }
 
 func Utf16FromString(s string) ([]uint16, error) {
-	/* for i := 0; i < len(s); i++ {
+	for i := 0; i < len(s); i++ {
 		if s[i] == 0 {
 			return nil, syscall.EINVAL
 		}
-	} */
-	str := utf16.Encode([]rune(s))
-	return append(str, 0x0), nil
+	}
+	return utf16.Encode([]rune(s + "\x00")), nil
 }
 
 func StringToWcharPtr(s string) *C.WCHAR {
