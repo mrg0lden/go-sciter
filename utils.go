@@ -51,7 +51,7 @@ func Utf16FromString(s string) ([]uint16, error) {
 			return nil, syscall.EINVAL
 		}
 	}
-	return utf16.Encode([]rune(s + "\x00")), nil
+	return utf16.Encode([]rune(s)), nil
 }
 
 func StringToWcharPtr(s string) *C.WCHAR {
