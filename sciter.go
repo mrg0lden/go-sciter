@@ -40,6 +40,7 @@ import (
 	"log"
 	"runtime"
 	"strings"
+	"unicode/utf16"
 	"unsafe"
 )
 
@@ -823,11 +824,7 @@ func (e *Element) Text() (string, error) {
 //   \return \b #SCDOM_RESULT SCAPI
 func (e *Element) SetText(text string) error {
 	// args
-	u16, err := Utf16FromString(text)
-	if err != nil {
-		return err
-	}
-
+	u16 := utf16.Encode([]rune(text))
 	clength := C.UINT(len(u16))
 	ctext := C.LPCWSTR(unsafe.Pointer(&u16[0]))
 	// cgo call
